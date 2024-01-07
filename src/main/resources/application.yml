@@ -8,8 +8,7 @@ spring:
     # hibernate:
     #   ddl-auto: create-drop
   datasource:
-    platform: postgres
     url: jdbc:postgresql://localhost:5432/mailsystem
     username: postgres
-    password: pass
+    password: postgres
     driverClassName: org.postgresql.Driver
