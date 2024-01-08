@@ -5,11 +5,9 @@ import java.util.Scanner;
 public class Email {
     private String firstname;
     private String lastname;
-
     private String password;
     private int defaultPasswordLength = 10;
     private String department;
-    private String alternateEmail;
     private String email;
 
     private String companySuffix = "aeycompay.com";
@@ -17,19 +15,14 @@ public class Email {
     public Email(String firstname, String lastname) {
         this.firstname = firstname;
         this.lastname = lastname;
-        //System.out.println("Email created: " + this.firstname + " " + this.lastname);
         this.department = this.setDepartment();
-        //System.out.println("Department: " + this.department);
         this.password = randomPassword(defaultPasswordLength);
-        //System.out.println("Your default password is: " + this.password);
         email = firstname.toLowerCase() + "." + lastname.toLowerCase() + "@" + department + "." + companySuffix;
-        System.out.println("Your email is: " + email);
-
     }
 
     public String setDepartment() {
         this.department = department;
-        System.out.println("Department codes\n1 for sales\n2 for development\n3 for accounting\n0 for none\nEnter department code: ");
+        System.out.println("Department codes:\n1 for sales\n2 for development\n3 for accounting\n0 for none\nEnter department code: ");
         Scanner ln = new Scanner(System.in);
         int depChoice = ln.nextInt();
         if (depChoice == 1) { return "sales"; }
@@ -48,5 +41,19 @@ public class Email {
         return new String(password);
     }
 
+    public String changePassword(String password) {
+        this.password = password;
+        return password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String showInfo() {
+        return "Display name: " + firstname + " " + lastname + "\n" +
+                "Company email: " + email + "\n" +
+                "Password: " + this.getPassword();
+    }
 
 }
