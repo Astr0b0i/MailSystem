@@ -1,14 +1,20 @@
 server:
-  port: 8090
+  port: 8080
 
 spring:
   jpa:
     database: POSTGRESQL
     show-sql: true
-    # hibernate:
-    #   ddl-auto: create-drop
+    hibernate:
+       ddl-auto: create-drop
   datasource:
     url: jdbc:postgresql://localhost:5432/mailsystem
     username: postgres
     password: postgres
     driverClassName: org.postgresql.Driver
+
+jwt:
+  secret:
+    key: 18d199a9068bc4bb5ebf9ba5ece88bb74aa4953bb6aed7329c7c96ed3d1a4d0c
+  time:
+    expiration: 86400000
