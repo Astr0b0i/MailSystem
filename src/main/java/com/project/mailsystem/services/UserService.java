@@ -5,6 +5,8 @@ import com.project.mailsystem.repositories.UserRepository;
 import com.project.mailsystem.viewmodels.request.CreateUserRequest;
 import com.project.mailsystem.viewmodels.response.CreateUserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,11 +23,13 @@ public class UserService {
         user.setDepartment(request.getDepartment());
         user.setSecondEmail(request.getEmail());
         user.setSmsNumber(request.getSmsNumber());
-        response.setMail(this.createEmailCompany(user));
-        response.setPassword(this.randomPassword(defaultPasswordLength));
-        user.setEmailCompany(response.getMail());
-        user.setPassword(response.getPassword());
+        user.setEmailCompany(this.createEmailCompany(user));
+        String password = this.randomPassword(defaultPasswordLength);
+        user.setPassword(new BCryptPasswordEncoder().encode(password));
         userRepository.save(user);
+
+        response.setMail(user.getEmailCompany());
+        response.setPassword(password);
         return response;
     }
 
@@ -45,6 +49,7 @@ public class UserService {
             int rand = (int) (Math.random() * passwordSet.length());
             password[i] = passwordSet.charAt(rand);
         }
+
         return new String(password);
     }
 

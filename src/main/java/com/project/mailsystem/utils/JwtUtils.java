@@ -1,6 +1,7 @@
 package com.project.mailsystem.utils;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -9,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
@@ -35,6 +37,7 @@ public class JwtUtils {
     public Boolean isTokenValid(String token){
         try{
             Jwts.parser()
+                    .verifyWith((SecretKey) this.getSignatureKey())
                     .build()
                     .parseSignedClaims(token);
             return true;
@@ -44,13 +47,14 @@ public class JwtUtils {
         }
     }
 
-    public <T> T getClaim(String token, Function<Claims, T> claimsTFunction){
-        Claims claims = this.getAllClaims(token);
+    public <T> T getClaim(String token, Function<Jws<Claims>, T> claimsTFunction){
+        Jws<Claims> claims = this.getAllClaims(token);
         return claimsTFunction.apply(claims);
     }
 
-    public Claims getAllClaims(String token){
-        return (Claims) Jwts.parser()
+    public Jws<Claims> getAllClaims(String token){
+        return Jwts.parser()
+                .verifyWith((SecretKey) this.getSignatureKey())
                 .build()
                 .parseSignedClaims(token);
     }
