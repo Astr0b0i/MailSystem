@@ -9,8 +9,8 @@ public class MailsystemApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MailsystemApplication.class, args);
-			UsersEntity email = new UsersEntity("Josefina", "Fronton");
-			System.out.println(email.showInfo());
+			//UsersEntity email = new UsersEntity("Josefina", "Fronton");
+			//System.out.println(email.showInfo());
 		}
 
 }

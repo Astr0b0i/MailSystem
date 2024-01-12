@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -57,7 +58,7 @@ public class SecurityConfig {
         jwtAuthenticationFilter.setFilterProcessesUrl("/login");
 
         return httpSecurity
-                .csrf().disable()
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests( auth -> {
                     auth.requestMatchers(AUTH_WHITELIST).permitAll();
                     auth.anyRequest().authenticated();
