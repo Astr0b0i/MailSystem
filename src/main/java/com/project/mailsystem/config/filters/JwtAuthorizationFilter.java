@@ -32,6 +32,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         if (header != null && header.startsWith("Bearer ")){
             String token = header.substring(7);
 
+            // valida el token
+
             if (jwtUtils.isTokenValid(token)){
                 String mail = jwtUtils.getClaim(token, Jws<Claims>::getPayload).getSubject();
                 UserDetails userDetails = userDetailsService.loadUserByUsername(mail);
