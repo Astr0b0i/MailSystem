@@ -4,7 +4,11 @@ import com.project.mailsystem.models.UsersEntity;
 import com.project.mailsystem.repositories.UserRepository;
 import com.project.mailsystem.viewmodels.request.CreateUserRequest;
 import com.project.mailsystem.viewmodels.response.CreateUserResponse;
+import com.project.mailsystem.viewmodels.response.UserDataResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,6 +34,20 @@ public class UserService {
 
         response.setMail(user.getEmailCompany());
         response.setPassword(password);
+        return response;
+    }
+
+    public UserDataResponse getDataResponse(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UsersEntity usersEntity = userRepository.findByEmailCompany((String) authentication.getPrincipal())
+                .orElseThrow(() -> new UsernameNotFoundException("El usuario " + authentication.getPrincipal() + "no existe."));
+        UserDataResponse response = new UserDataResponse();
+        response.setFirstname(usersEntity.getFirstname());
+        response.setLastname(usersEntity.getLastname());
+        response.setDepartment(usersEntity.getDepartment());
+        response.setCompany(usersEntity.getCompany());
+        response.setPassword(usersEntity.getPassword());
+        response.setMail(usersEntity.getEmailCompany());
         return response;
     }
 
